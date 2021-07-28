@@ -50,7 +50,7 @@ void print_usage(void)
 
 int main(int argc, char **argv)
 {  
-  uint32_t v[2], b[2], i[2], cp, ps, p, q, c, s;  
+  uint32_t v[2], b[2], i[2], ps, p, q, c, s;  
   uint32_t *dbuffer_in;
   uint32_t *dbuffer_out;
   uint16_t t;
@@ -119,14 +119,12 @@ int main(int argc, char **argv)
   printf("CRP Chunks: %d\n", crp_chunks-1);  
   // extract information like start/length for the indidual chunks in the CRP file
   t = 1;
-  cp = (uint32_t) (uint32_t*)(crp_buffer+0xC);
   do
   {
-      chunk_crp_offset =  *(uint32_t*)cp + 0x40;
+      chunk_crp_offset =  *(uint32_t*)(8*t+4+crp_buffer);
       printf("\nStart: 0x%x\n", chunk_crp_offset);
-      chunk_crp_size =  *(uint32_t*)(cp+4)-0x40;
+      chunk_crp_size =  *(uint32_t*)(8*t+8+crp_buffer);
       printf("Length: 0x%x\n", chunk_crp_size);
-      cp = cp +8;
       ++t;
       // alloc buffers in/out
       dbuffer_in=malloc(chunk_crp_size);
